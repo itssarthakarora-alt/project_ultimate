@@ -1,18 +1,22 @@
 # Pipeline — install the SSL certificate pushed to the certs/ folder into cPanel.
 #
-# How to use:
-#   1. Push certificate.crt, ca_bundle.crt and private.key into the certs/ folder.
+# How it works:
+#   1. You push certificate.crt, ca_bundle.crt and private.key into certs/.
 #      Any push that changes certs/** triggers this workflow.
-#   2. You can also run it manually from the Actions tab (optionally overriding
-#      the domain).
+#   2. The workflow sends those 3 files straight to the cPanel SSL API
+#      (SSL::install_ssl) — the install itself does not need an FTP upload.
+#      A short wait is included so the FTP deploy pipeline can finish first.
+#   3. You can also run it manually from the Actions tab.
 #
 # Required secrets (repo -> Settings -> Secrets and variables -> Actions):
-#   CPANEL_HOST        - cPanel server hostname, e.g. ultimatesshop.vc
 #   CPANEL_USER        - cPanel account username
 #   CPANEL_API_TOKEN   - cPanel API token (cPanel -> Security -> Manage API Tokens)
 #                       If your cPanel has no API Tokens feature, switch the
 #                       Authorization header below to basic auth with
 #                       -u "${CPANEL_USER}:${CPANEL_PASSWORD}".
+#
+# CPANEL_HOST defaults to your GoDaddy server hostname, so you do NOT need to
+# set it. Only set the CPANEL_HOST repository variable if the server changes.
 #
 # Optional: set the CERT_DOMAIN repository variable, or use the manual-run
 # input, if the certificate is for a different domain than the default below.
@@ -22,7 +26,9 @@ name: Install SSL certificate to cPanel
 on:
   push:
     paths:
-      - 'certs/**'
+      - 'certs/certificate.crt'
+      - 'certs/ca_bundle.crt'
+      - 'certs/private.key'
   workflow_dispatch:
     inputs:
       domain:
@@ -45,18 +51,22 @@ jobs:
           test -f certs/ca_bundle.crt
           test -f certs/private.key
 
+      - name: Wait for the FTP deploy to finish
+        run: sleep 20
+
       - name: Install certificate via cPanel UAPI
         env:
-          CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
+          CPANEL_HOST: ${{ vars.CPANEL_HOST || 'p3plzcpnl504746.prod.phx3.secureserver.net' }}
           CPANEL_USER: ${{ secrets.CPANEL_USER }}
           CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
         run: |
-          # Normalize the host so scheme/port/path in the secret don't break the URL.
-          HOST="${CPANEL_HOST}"
+          # Normalize the host (strip whitespace, scheme, port and path).
+          HOST="$(printf '%s' "${CPANEL_HOST}" | tr -d '[:space:]')"
           HOST="${HOST#https://}"
           HOST="${HOST#http://}"
           HOST="${HOST%%/*}"
           HOST="${HOST%%:*}"
+          echo "Installing certificate for ${DOMAIN} on ${HOST}"
           RESPONSE="$(curl -sS --fail-with-body \
             -H "Authorization: cpanel ${CPANEL_USER}:${CPANEL_API_TOKEN}" \
             --data-urlencode "domain=${DOMAIN}" \
