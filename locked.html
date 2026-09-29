@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en" data-layout="topnav">
+<link href="public/assets/css/app-saas.min.css" rel="stylesheet" type="text/css" id="app-style" />
+<link href="public/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+<link href="public/assets/css/unicons.css" rel="stylesheet" type="text/css" />
+<link rel="shortcut icon" href="public/assets/img/logo2.png" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<script type="text/javascript" src="public/assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="public/assets/js/vendor.min.js"></script>
+ 
+<script src="public/assets/js/hyper-config.js"></script>
+<style type="text/css" id="notify-bootstrap">.notifyjs-bootstrap-base {
+    font-weight: bold;
+    padding: 8px 15px 8px 14px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    background-color: #fcf8e3;
+    border: 1px solid #fbeed5;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    white-space: nowrap;
+    padding-left: 25px;
+    background-repeat: no-repeat;
+    background-position: 3px 7px;
+  }
+  .notifyjs-bootstrap-error {
+    color: #B94A48;
+    background-color: #F2DEDE;
+    border-color: #EED3D7;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAtRJREFUeNqkVc1u00AQHq+dOD+0poIQfkIjalW0SEGqRMuRnHos3DjwAH0ArlyQeANOOSMeAA5VjyBxKBQhgSpVUKKQNGloFdw4cWw2jtfMOna6JOUArDTazXi/b3dm55socPqQhFka++aHBsI8GsopRJERNFlY88FCEk9Yiwf8RhgRyaHFQpPHCDmZG5oX2ui2yilkcTT1AcDsbYC1NMAyOi7zTX2Agx7A9luAl88BauiiQ/cJaZQfIpAlngDcvZZMrl8vFPK5+XktrWlx3/ehZ5r9+t6e+WVnp1pxnNIjgBe4/6dAysQc8dsmHwPcW9C0h3fW1hans1ltwJhy0GxK7XZbUlMp5Ww2eyan6+ft/f2FAqXGK4CvQk5HueFz7D6GOZtIrK+srupdx1GRBBqNBtzc2AiMr7nPplRdKhb1q6q6zjFhrklEFOUutoQ50xcX86ZlqaZpQrfbBdu2R6/G19zX6XSgh6RX5ubyHCM8nqSID6ICrGiZjGYYxojEsiw4PDwMSL5VKsC8Yf4VRYFzMzMaxwjlJSlCyAQ9l0CW44PBADzXhe7xMdi9HtTrdYjFYkDQL0cn4Xdq2/EAE+InCnvADTf2eah4Sx9vExQjkqXT6aAERICMewd/UAp/IeYANM2joxt+q5VI+ieq2i0Wg3l6DNzHwTERPgo1ko7XBXj3vdlsT2F+UuhIhYkp7u7CarkcrFOCtR3H5JiwbAIeImjT/YQKKBtGjRFCU5IUgFRe7fF4cCNVIPMYo3VKqxwjyNAXNepuopyqnld602qVsfRpEkkz+GFL1wPj6ySXBpJtWVa5xlhpcyhBNwpZHmtX8AGgfIExo0ZpzkWVTBGiXCSEaHh62/PoR0p/vHaczxXGnj4bSo+G78lELU80h1uogBwWLf5YlsPmgDEd4M236xjm+8nm4IuE/9u+/PH2JXZfbwz4zw1WbO+SQPpXfwG/BBgAhCNZiSb/pOQAAAAASUVORK5CYII=);
+  }
+  .notifyjs-bootstrap-success {
+    color: #468847;
+    background-color: #DFF0D8;
+    border-color: #D6E9C6;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAutJREFUeNq0lctPE0Ecx38zu/RFS1EryqtgJFA08YCiMZIAQQ4eRG8eDGdPJiYeTIwHTfwPiAcvXIwXLwoXPaDxkWgQ6islKlJLSQWLUraPLTv7Gme32zoF9KSTfLO7v53vZ3d/M7/fIth+IO6INt2jjoA7bjHCJoAlzCRw59YwHYjBnfMPqAKWQYKjGkfCJqAF0xwZjipQtA3MxeSG87VhOOYegVrUCy7UZM9S6TLIdAamySTclZdYhFhRHloGYg7mgZv1Zzztvgud7V1tbQ2twYA34LJmF4p5dXF1KTufnE+SxeJtuCZNsLDCQU0+RyKTF27Unw101l8e6hns3u0PBalORVVVkcaEKBJDgV3+cGM4tKKmI+ohlIGnygKX00rSBfszz/n2uXv81wd6+rt1orsZCHRdr1Imk2F2Kob3hutSxW8thsd8AXNaln9D7CTfA6O+0UgkMuwVvEFFUbbAcrkcTA8+AtOk8E6KiQiDmMFSDqZItAzEVQviRkdDdaFgPp8HSZKAEAL5Qh7Sq2lIJBJwv2scUqkUnKoZgNhcDKhKg5aH+1IkcouCAdFGAQsuWZYhOjwFHQ96oagWgRoUov1T9kRBEODAwxM2QtEUl+Wp+Ln9VRo6BcMw4ErHRYjH4/B26AlQoQQTRdHWwcd9AH57+UAXddvDD37DmrBBV34WfqiXPl61g+vr6xA9zsGeM9gOdsNXkgpEtTwVvwOklXLKm6+/p5ezwk4B+j6droBs2CsGa/gNs6RIxazl4Tc25mpTgw/apPR1LYlNRFAzgsOxkyXYLIM1V8NMwyAkJSctD1eGVKiq5wWjSPdjmeTkiKvVW4f2YPHWl3GAVq6ymcyCTgovM3FzyRiDe2TaKcEKsLpJvNHjZgPNqEtyi6mZIm4SRFyLMUsONSSdkPeFtY1n0mczoY3BHTLhwPRy9/lzcziCw9ACI+yql0VLzcGAZbYSM5CCSZg1/9oc/nn7+i8N9p/8An4JMADxhH+xHfuiKwAAAABJRU5ErkJggg==);
+  }
+  .notifyjs-bootstrap-info {
+    color: #3A87AD;
+    background-color: #D9EDF7;
+    border-color: #BCE8F1;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QYFAhkSsdes/QAAA8dJREFUOMvVlGtMW2UYx//POaWHXg6lLaW0ypAtw1UCgbniNOLcVOLmAjHZolOYlxmTGXVZdAnRfXQm+7SoU4mXaOaiZsEpC9FkiQs6Z6bdCnNYruM6KNBw6YWewzl9z+sHImEWv+vz7XmT95f/+3/+7wP814v+efDOV3/SoX3lHAA+6ODeUFfMfjOWMADgdk+eEKz0pF7aQdMAcOKLLjrcVMVX3xdWN29/GhYP7SvnP0cWfS8caSkfHZsPE9Fgnt02JNutQ0QYHB2dDz9/pKX8QjjuO9xUxd/66HdxTeCHZ3rojQObGQBcuNjfplkD3b19Y/6MrimSaKgSMmpGU5WevmE/swa6Oy73tQHA0Rdr2Mmv/6A1n9w9suQ7097Z9lM4FlTgTDrzZTu4StXVfpiI48rVcUDM5cmEksrFnHxfpTtU/3BFQzCQF/2bYVoNbH7zmItbSoMj40JSzmMyX5qDvriA7QdrIIpA+3cdsMpu0nXI8cV0MtKXCPZev+gCEM1S2NHPvWfP/hL+7FSr3+0p5RBEyhEN5JCKYr8XnASMT0xBNyzQGQeI8fjsGD39RMPk7se2bd5ZtTyoFYXftF6y37gx7NeUtJJOTFlAHDZLDuILU3j3+H5oOrD3yWbIztugaAzgnBKJuBLpGfQrS8wO4FZgV+c1IxaLgWVU0tMLEETCos4xMzEIv9cJXQcyagIwigDGwJgOAtHAwAhisQUjy0ORGERiELgG4iakkzo4MYAxcM5hAMi1WWG1yYCJIcMUaBkVRLdGeSU2995TLWzcUAzONJ7J6FBVBYIggMzmFbvdBV44Corg8vjhzC+EJEl8U1kJtgYrhCzgc/vvTwXKSib1paRFVRVORDAJAsw5FuTaJEhWM2SHB3mOAlhkNxwuLzeJsGwqWzf5TFNdKgtY5qHp6ZFf67Y/sAVadCaVY5YACDDb3Oi4NIjLnWMw2QthCBIsVhsUTU9tvXsjeq9+X1d75/KEs4LNOfcdf/+HthMnvwxOD0wmHaXr7ZItn2wuH2SnBzbZAbPJwpPx+VQuzcm7dgRCB57a1uBzUDRL4bfnI0RE0eaXd9W89mpjqHZnUI5Hh2l2dkZZUhOqpi2qSmpOmZ64Tuu9qlz/SEXo6MEHa3wOip46F1n7633eekV8ds8Wxjn37Wl63VVa+ej5oeEZ/82ZBETJjpJ1Rbij2D3Z/1trXUvLsblCK0XfOx0SX2kMsn9dX+d+7Kf6h8o4AIykuffjT8L20LU+w4AZd5VvEPY+XpWqLV327HR7DzXuDnD8r+ovkBehJ8i+y8YAAAAASUVORK5CYII=);
+  }
+  .notifyjs-bootstrap-warn {
+    color: #C09853;
+    background-color: #FCF8E3;
+    border-color: #FBEED5;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAMAAAC6V+0/AAABJlBMVEXr6eb/2oD/wi7/xjr/0mP/ykf/tQD/vBj/3o7/uQ//vyL/twebhgD/4pzX1K3z8e349vK6tHCilCWbiQymn0jGworr6dXQza3HxcKkn1vWvV/5uRfk4dXZ1bD18+/52YebiAmyr5S9mhCzrWq5t6ufjRH54aLs0oS+qD751XqPhAybhwXsujG3sm+Zk0PTwG6Shg+PhhObhwOPgQL4zV2nlyrf27uLfgCPhRHu7OmLgAafkyiWkD3l49ibiAfTs0C+lgCniwD4sgDJxqOilzDWowWFfAH08uebig6qpFHBvH/aw26FfQTQzsvy8OyEfz20r3jAvaKbhgG9q0nc2LbZxXanoUu/u5WSggCtp1anpJKdmFz/zlX/1nGJiYmuq5Dx7+sAAADoPUZSAAAAAXRSTlMAQObYZgAAAAFiS0dEAIgFHUgAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfdBgUBGhh4aah5AAAAlklEQVQY02NgoBIIE8EUcwn1FkIXM1Tj5dDUQhPU502Mi7XXQxGz5uVIjGOJUUUW81HnYEyMi2HVcUOICQZzMMYmxrEyMylJwgUt5BljWRLjmJm4pI1hYp5SQLGYxDgmLnZOVxuooClIDKgXKMbN5ggV1ACLJcaBxNgcoiGCBiZwdWxOETBDrTyEFey0jYJ4eHjMGWgEAIpRFRCUt08qAAAAAElFTkSuQmCC);
+  }
+  </style>
+  <style type="text/css" id="core-notify">.notifyjs-corner {
+    position: fixed;
+    margin: 5px;
+    z-index: 1050;
+  }
+  
+  .notifyjs-corner .notifyjs-wrapper,
+  .notifyjs-corner .notifyjs-container {
+    position: relative;
+    display: block;
+    height: inherit;
+    width: inherit;
+    margin: 3px;
+  }
+  
+  .notifyjs-wrapper {
+    z-index: 1;
+    position: absolute;
+    display: inline-block;
+    height: 0;
+    width: 0;
+  }
+  
+  .notifyjs-container {
+    display: none;
+    z-index: 1;
+    position: absolute;
+  }
+  
+  .notifyjs-hidable {
+    cursor: pointer;
+  }
+  
+  [data-notify-text],[data-notify-html] {
+    position: relative;
+  }
+  
+  .notifyjs-arrow {
+    position: absolute;
+    z-index: 2;
+    width: 0;
+    height: 0;
+  }
+  :root {
+    --ct-box-shadow: 0px 0px 35px 0px rgba(154, 161, 171, 0.15);
+    --ct-card-bg-custom: #fff;
+    --ct-dropdown-bg-custom: #fff;
+    --ct-input-bg-custom: #fff;
+    --ct-menu-condensed-link-bg: #727cf5;
+}
+  html[data-layout=topnav] .topnav {
+    width: 100%;
+    z-index: 1000;
+    position: sticky;
+    top: var(--ct-topbar-height);
+    background: #313a46;
+    -webkit-box-shadow: var(--ct-box-shadow);
+    box-shadow: var(--ct-box-shadow);
+    border-top: 1px solid var(--ct-topbar-user-border);
+}
+.navbar-custom {
+    background: #fff;
+    -webkit-box-shadow: var(--ct-box-shadow);
+    box-shadow: var(--ct-box-shadow);
+    min-height: var(--ct-topbar-height);
+    margin-left: var(--ct-leftbar-width);
+    position: sticky;
+    top: 0;
+    -webkit-transition: all .25s ease-in-out;
+    transition: all .25s ease-in-out;
+    z-index: 1000;
+    border-bottom: var(--ct-theme-card-border-width) solid var(--ct-gray-300);
+}
+  </style>
+<body>
+
+    <div class="wrapper">
+
+        <div class="navbar-custom">
+            <div class="topbar container-fluid">
+                <div class="d-flex align-items-center gap-lg-2 gap-1">
+
+
+
+                    <button class="button-toggle-menu">
+                        <i class="mdi mdi-menu"></i>
+                    </button>
+
+
+                    <button class="navbar-toggle" data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
+                        <div class="lines">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </button>
+
+
+                </div>
+
+                <ul class="topbar-menu d-flex align-items-center gap-3">
+
+
+
+
+
+
+
+                    <li class="d-none d-sm-inline-block">
+                        <div class="nav-link" id="light-dark-mode" data-bs-toggle="tooltip" data-bs-placement="left"
+                            title="Theme Mode">
+                            <i class="ri-moon-line font-22"></i>
+                        </div>
+                    </li>
+
+
+                    <div id="reseller-link">
+                        <a href="#" type="button" class="btn btn-warning" style="color: black !important;">Apply
+                            for reseller</a>
+                    </div>
+
+
+
+
+
+
+                    <span class="account-user-avatar">
+
+                        <h5 class="my-0">Discount : 0% </h5>
+                    </span>
+
+                    <li class="dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none nav-user px-2" data-bs-toggle="dropdown"
+                            href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                            <span class="account-user-avatar">
+
+                                <h5 class="arrow-down"> <?php echo $_SESSION['user_id']; ?><br><span
+                                        style="color:green"> <b>2.15 $</b></span></h5>
+                            </span>
+
+
+
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated profile-dropdown">
+                            <!-- item-->
+                            <div class=" dropdown-header noti-title">
+                                <h6 class="text-overflow m-0">Welcome !</h6>
+                            </div>
+
+
+
+                            <a href="#" class="dropdown-item">
+                                <i class="mdi mdi-logout me-1"></i>
+                                <span>Profile</span>
+                            </a>
+
+
+
+                            <a href="/logout" class="dropdown-item">
+                                <i class="mdi mdi-logout me-1"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="topnav">
+            <div class="container-fluid">
+                <nav class="navbar navbar-expand-lg">
+                    <div class="collapse navbar-collapse" id="topnav-menu-content">
+                        <ul class="navbar-nav">
+
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none" href=""https://ultimatesshop.vc/funds""
+                                    style="color:white !important">
+                                    <i class="uil-newspaper"></i>News
+                                </a>
+                            </li>
+
+
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboards"
+                                    role="button" style="color:white !important "data-bs-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <i class=" uil-atm-card"></i>CCS <div class="arrow-down"></div>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-dashboards">
+                                    <a href="#" class="dropdown-item">CCS Search</a>
+                                    <a href="#" class="dropdown-item">CCS CART</a>
+                                    <a href="#" class="dropdown-item">CCS ORDERS</a>
+
+                                </div>
+
+                            </li>
+
+
+
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboards"
+                                    role="button"
+                                    style="color:black !important;background-color: #fcc53b; "data-bs-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <i class="uil-dashboard"></i>Bidding <div class="arrow-down"></div>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-dashboards">
+                                    <a href="#" class="dropdown-item">CCS Bidding</a>
+
+                                </div>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none" href="#"
+                                    style="color:white !important">
+                                    <i class="uil-comment-edit"></i>Support
+                                </a>
+                            </li>
+
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none" href="https://ultimatesshop.vc/locked.html"
+                                    style="color:white !important">
+                                    <i class="uil-bitcoin-circle"></i>Add Funds
+                                </a>
+                            </li>
+
+
+
+
+
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+
+
+
+        <div class="content-page">
+            <div class="content">
+                <div class="container-fluid">
+
+                    <div class="container-fluid">
+
+
+
+        <br> <!-- Portlet card -->
+        <div class="card bg-warning bg-opacity-80 text-white mb-0">
+            <div class="card-body">
+                <div class="card-widgets">
+                    <a href="javascript:;" data-bs-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                    <a data-bs-toggle="collapse" href="#cardCollpase3" role="button" aria-expanded="false"
+                        aria-controls="cardCollpase3"><i class="mdi mdi-minus"></i></a>
+                    <a href="#" data-bs-toggle="remove"><i class="mdi mdi-close"></i></a>
+                </div>
+                <h5 class="card-title mb-0">Information</h5>
+
+                <div id="cardCollpase3" class="collapse pt-3 show">
+                    <span style="color:black">
+                        - Each Address is for 1 payment/transaction only!
+                        <br>
+                        - Any payment above 300$ , will be credited 15 % bonus on payment.
+                        <br>
+                        - We will credit your payment after 3 confirmations on blockchain
+                        <br>
+                        - We do not refund any balance .
+                    </span>
+                </div>
+            </div>
+        </div> <!-- end card-->
+
+        <br>
+
+
+
+<center> <h5 style="color:red;">You should have at least $20 balance to use this service.</h5></center>
+
+
+        <legend>Add Funds</legend>
+
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <h6 class="card-header bg-light">
+
+
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <div class="avatar-sm rounded">
+                                    <span
+                                        class="avatar-title bg-warning-lighten text-warning border border-warning rounded-circle h3 my-0">
+                                        <img class="bcImage" src="https://ultimatesshop.vc/public/assets/img/bitcoin.png" width="50"
+                                            height="50">
+
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                                <h4 class="mt-0 mb-1 font-16 fw-semibold">Bitcoin - BTC( 5% Fee )</h4>
+                                <p class="mb-0 text-muted" style="font-size: 15px;color:green !important"><b>
+                                    </b> </p>
+                            </div>
+                        </div>
+                    </h6>
+                    <div class="card-body">
+
+                        <div class="mb-3">
+
+
+
+                            <label for="simpleinput" class="form-label">Send any amount to this Address</label>
+
+
+
+                            <input type="text" id="readonlyinput" class="form-control"
+                                value="1H2UmCVX26E3RTTictLsQt35DZjs9E1Ezr">
+
+
+
+
+
+
+                            
+                                <br>
+                                <input type="button" class="btn btn-warning" style="color:black !important"
+                                    name="submit" value="Press this button after Paying">
+
+
+                            <br>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="col-md-6">
+                <div class="card">
+                    <h6 class="card-header bg-light">
+
+
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <div class="avatar-sm rounded">
+                                    <span
+                                        class="avatar-title bg-warning-lighten text-warning border border-warning rounded-circle h3 my-0">
+                                        <img class="bcImage" src="https://ultimatesshops.vc/public/assets/img/ltc.png" width="50"
+                                            height="50">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                                <h4 class="mt-0 mb-1 font-16 fw-semibold">Litecoin - LTC ( 3% Fee ) </h4>
+                                <p class="mb-0 text-muted" style="font-size: 15px;color:green !important"><b></b>
+                                
+                        
+                                    
+                                </p>
+                            </div
+                        </div>
+                    </h6>
+                    <div class="card-body">
+
+                        <div class="mb-3">
+
+                            
+                               <label for="simpleinput" class="form-label">Send any amount to this Address</label>
+
+
+
+                            <input type="text" id="readonlyinput" class="form-control"
+                                value="ltc1q6zumh39hgpkfva2qe7p46kgcxun578lh4kx00y">
+
+
+
+
+
+
+                           
+                                <br>
+                                <input type="button" class="btn btn-warning" style="color:black !important"
+                                    name="submit" value="Press this button after Paying">
+                                    
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="card card-body">
+            <div style="overflow-x: auto">
+
+                <legend>Payments History</legend>
+
+
+                <div id="orders-grid" class="grid-view">
+
+                    <table class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th id="orders-grid_c0">Dat</th>
+                                <th id="orders-grid_c1">Coin</th>
+                                <th id="orders-grid_c2">Address</th>
+                                <th id="orders-grid_c3">Amount in Coin</th>
+                                <th id="orders-grid_c4">Coin rate</th>
+                                <th id="orders-grid_c5">Orginal Amount</th>
+                                <th id="orders-grid_c6">Bonus</th>
+                                <th id="orders-grid_c7">Amount</th>
+                                <th id="orders-grid_c8">Status</th>
+                                <th id="orders-grid_c9">Check</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="10" class="empty"><span class="empty">No results found.</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="keys" style="display:none" title="/funds"></div>
+                </div>
+            </div><br>
+        </div>
+    </div>
+
+       
+
+
+                </div></div>
+        </div>
+
+
+
+
+
+<script>
+    $(document).ready(function() {
+        $('#bs-example-modal-lg').modal('show');
+
+
+        var counter = 3;
+        var interval = setInterval(function() {
+            counter--;
+            $('#timer').text(counter);
+            if (counter == 0) {
+                clearInterval(interval);
+                $('#close-button').prop('disabled', false);
+            }
+        }, 1000);
+
+
+    });
+</script>
+
+
+
+
+
+
+</body>
+
+</html>
