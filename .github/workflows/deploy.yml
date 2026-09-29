@@ -37,6 +37,5 @@ jobs:
             .github/**
             .gitignore
             README.md
-            .well-known/**
             error_log
             .ftpquota
