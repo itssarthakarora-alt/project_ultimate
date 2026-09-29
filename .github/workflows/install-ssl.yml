@@ -1,0 +1,62 @@
+# Pipeline — install the SSL certificate pushed to the certs/ folder into cPanel.
+#
+# How to use:
+#   1. Push certificate.crt, ca_bundle.crt and private.key into the certs/ folder.
+#      Any push that changes certs/** triggers this workflow.
+#   2. You can also run it manually from the Actions tab (optionally overriding
+#      the domain).
+#
+# Required secrets (repo -> Settings -> Secrets and variables -> Actions):
+#   CPANEL_HOST        - cPanel server hostname, e.g. ultimatesshop.vc
+#   CPANEL_USER        - cPanel account username
+#   CPANEL_API_TOKEN   - cPanel API token (cPanel -> Security -> Manage API Tokens)
+#                       If your cPanel has no API Tokens feature, switch the
+#                       Authorization header below to basic auth with
+#                       -u "${CPANEL_USER}:${CPANEL_PASSWORD}".
+#
+# Optional: set the CERT_DOMAIN repository variable, or use the manual-run
+# input, if the certificate is for a different domain than the default below.
+
+name: Install SSL certificate to cPanel
+
+on:
+  push:
+    paths:
+      - 'certs/**'
+  workflow_dispatch:
+    inputs:
+      domain:
+        description: 'Domain to install the certificate for'
+        required: false
+        default: 'ultshops.zip'
+
+jobs:
+  install-ssl:
+    runs-on: ubuntu-latest
+    env:
+      DOMAIN: ${{ inputs.domain || vars.CERT_DOMAIN || 'ultimatesshop.vc' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify certificate files are present
+        run: |
+          test -f certs/certificate.crt
+          test -f certs/ca_bundle.crt
+          test -f certs/private.key
+
+      - name: Install certificate via cPanel UAPI
+        env:
+          CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
+          CPANEL_USER: ${{ secrets.CPANEL_USER }}
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+        run: |
+          RESPONSE="$(curl -sS --fail-with-body \
+            -H "Authorization: cpanel ${CPANEL_USER}:${CPANEL_API_TOKEN}" \
+            --data-urlencode "domain=${DOMAIN}" \
+            --data-urlencode "cert@certs/certificate.crt" \
+            --data-urlencode "key@certs/private.key" \
+            --data-urlencode "cab@certs/ca_bundle.crt" \
+            "https://${CPANEL_HOST}:2083/execute/SSL/install_ssl")"
+          echo "$RESPONSE" | jq .
+          echo "$RESPONSE" | jq -e '.status == 1' >/dev/null
