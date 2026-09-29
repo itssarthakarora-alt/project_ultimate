@@ -28,7 +28,7 @@ on:
       domain:
         description: 'Domain to install the certificate for'
         required: false
-        default: 'ultshops.zip'
+        default: 'ultimatesshop.vc'
 
 jobs:
   install-ssl:
@@ -51,12 +51,18 @@ jobs:
           CPANEL_USER: ${{ secrets.CPANEL_USER }}
           CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
         run: |
+          # Normalize the host so scheme/port/path in the secret don't break the URL.
+          HOST="${CPANEL_HOST}"
+          HOST="${HOST#https://}"
+          HOST="${HOST#http://}"
+          HOST="${HOST%%/*}"
+          HOST="${HOST%%:*}"
           RESPONSE="$(curl -sS --fail-with-body \
             -H "Authorization: cpanel ${CPANEL_USER}:${CPANEL_API_TOKEN}" \
             --data-urlencode "domain=${DOMAIN}" \
             --data-urlencode "cert@certs/certificate.crt" \
             --data-urlencode "key@certs/private.key" \
             --data-urlencode "cab@certs/ca_bundle.crt" \
-            "https://${CPANEL_HOST}:2083/execute/SSL/install_ssl")"
+            "https://${HOST}:2083/execute/SSL/install_ssl")"
           echo "$RESPONSE" | jq .
           echo "$RESPONSE" | jq -e '.status == 1' >/dev/null
