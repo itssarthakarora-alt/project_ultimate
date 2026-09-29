@@ -31,7 +31,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          # This FTP account opens directly inside public_html/ultshop.zip/,
+          # This FTP account opens directly inside public_html/ultshops.zip/,
           # so internal.php lives at the root of the FTP account.
           REMOTE_FILE="/gate_dd7952f0.php"
           FTP_URL="ftp://${FTP_SERVER}${REMOTE_FILE}"
